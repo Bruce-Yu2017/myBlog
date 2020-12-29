@@ -23,7 +23,7 @@ const PostDetail = ({ match }) => {
   return (
     <>
       <Link to="/" className="btn btn-light my-3">
-        Go Back
+        <i className="fas fa-arrow-left mr-1"></i>Go Back
       </Link>
       {loading && <Loader />}
       {error && <Message variant="danger">{error}</Message>}
