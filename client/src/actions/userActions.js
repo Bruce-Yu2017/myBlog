@@ -5,6 +5,7 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_LOGOUT,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -66,4 +67,10 @@ export const register = ({ name, password, email }) => async (dispatch) => {
           : error.message,
     });
   }
+};
+
+export const logout = () => async (dispatch) => {
+  await axios.post("/api/users/logout", {});
+  dispatch({ type: USER_LOGOUT });
+  window.location.href = "/login";
 };

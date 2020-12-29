@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Button,
@@ -9,18 +9,15 @@ import {
   Dropdown,
 } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { USER_LOGOUT } from "../constants/userConstants";
-import { useHistory } from "react-router-dom";
+import { logout } from "../actions/userActions";
 
 const Header = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const { userAuth } = useSelector((state) => state);
   const { userInfo } = userAuth;
 
   const handleLogout = () => {
-    dispatch({ type: USER_LOGOUT });
-    history.push("/");
+    dispatch(logout());
   };
 
   return (

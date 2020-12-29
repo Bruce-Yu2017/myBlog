@@ -53,4 +53,9 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 
-export { register, login };
+const logout = asyncHandler(async (req, res) => {
+  req.session.user = null;
+  res.status(200).json({ message: "logout success" });
+});
+
+export { register, login, logout };
