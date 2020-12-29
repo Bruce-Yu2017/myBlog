@@ -9,6 +9,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
+    "express-session": "^1.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
     "morgan": "^1.10.0"
@@ -19,8 +20,10 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server/server.js",
-    "data:import": "node server/dummyData"
+    "server": "nodemon server/server1.js",
+    "client": "npm start --prefix client",
+    "data:import": "node server/dummyData",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC"

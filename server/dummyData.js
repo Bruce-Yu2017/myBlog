@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import User from "./models/UserModel.js";
-import Blog from "./models/BlogModel.js";
+import Post from "./models/PostModel.js";
 import users from "./data/users.js";
-import blogs from "./data/blogs.js";
+import posts from "./data/posts.js";
 
 dotenv.config();
 connectDB();
@@ -11,13 +11,13 @@ connectDB();
 const importData = async () => {
   try {
     await User.deleteMany();
-    await Blog.deleteMany();
+    await Post.deleteMany();
     const newUsers = await User.insertMany(users);
     const firstUserId = newUsers[0]._id;
-    const newBlogs = blogs.map((blog) => {
-      return { ...blog, user: firstUserId };
+    const newPosts = posts.map((post) => {
+      return { ...post, user: firstUserId };
     });
-    await Blog.insertMany(newBlogs);
+    await Post.insertMany(newPosts);
     console.log("Data imported");
     process.exit();
   } catch (error) {

@@ -1,7 +1,14 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
-const BlogSchema = mongoose.Schema(
+const initMap = () => {
+  const map = new Map();
+  map.set("fromIp", {});
+  map.set("fromUserId", {});
+  return map;
+};
+
+const PostSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -9,6 +16,10 @@ const BlogSchema = mongoose.Schema(
       required: true,
     },
     name: {
+      type: String,
+      required: true,
+    },
+    description: {
       type: String,
       required: true,
     },
@@ -20,7 +31,14 @@ const BlogSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-
+    readCount: {
+      type: Number,
+      default: 0,
+    },
+    readBy: {
+      type: Map,
+      default: initMap(),
+    },
     createdAt: { default: new Date(), type: Date },
   },
   {
@@ -28,5 +46,5 @@ const BlogSchema = mongoose.Schema(
   }
 );
 
-const Blog = mongoose.model("Blog", BlogSchema);
-export default Blog;
+const Post = mongoose.model("Post", PostSchema);
+export default Post;
