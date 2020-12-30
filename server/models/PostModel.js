@@ -23,8 +23,8 @@ const PostSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    tag: {
-      type: String,
+    tags: {
+      type: [String],
       required: true,
     },
     content: {

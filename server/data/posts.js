@@ -1,7 +1,7 @@
 const posts = [
   {
     name: "JS New",
-    tag: "javascript",
+    tags: ["javascript", "React"],
     description:
       "Cillum voluptate et officia reprehenderit nulla fugiat veniam ipsum sunt.",
     content:
@@ -9,7 +9,7 @@ const posts = [
   },
   {
     name: "Python New",
-    tag: "Python",
+    tags: ["Python"],
     description:
       "Cillum voluptate et officia reprehenderit nulla fugiat veniam ipsum sunt.",
     content:
@@ -17,7 +17,7 @@ const posts = [
   },
   {
     name: "Ruby New",
-    tag: "Ruby",
+    tags: ["Ruby"],
     description:
       "Cillum voluptate et officia reprehenderit nulla fugiat veniam ipsum sunt.",
     content:
@@ -25,7 +25,7 @@ const posts = [
   },
   {
     name: "Java New",
-    tag: "Java",
+    tags: ["Java", "Spring"],
     description:
       "Cillum voluptate et officia reprehenderit nulla fugiat veniam ipsum sunt.",
 

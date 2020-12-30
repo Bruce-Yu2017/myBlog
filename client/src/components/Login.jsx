@@ -7,7 +7,7 @@ import Loader from "./Loader";
 import Message from "./Message";
 import { Link } from "react-router-dom";
 
-const Login = ({ history, location }) => {
+const Login = ({ history }) => {
   const { register, handleSubmit, errors } = useForm({ mode: "all" });
   const dispatch = useDispatch();
 

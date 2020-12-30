@@ -44,9 +44,17 @@ const PostDetail = ({ match }) => {
                       <div>
                         <i className="far fa-calendar-alt mr-1"></i>
                         {new Date(post.createdAt).toLocaleDateString()}{" "}
-                        <Badge variant="success" pill className="ml-2">
-                          {post.tag}
-                        </Badge>
+                        {post.tags.length > 0 &&
+                          post.tags.map((tag, index) => (
+                            <Badge
+                              variant="success"
+                              pill
+                              className="ml-2"
+                              key={`${tag}${index}`}
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
                         <span className="ml-2">Read: {post.readCount}</span>
                       </div>
                     </div>

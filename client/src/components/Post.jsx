@@ -13,9 +13,17 @@ const Post = ({ post }) => {
                 <Card.Subtitle className="mb-2 text-muted small">
                   Post by <strong>{post.user.name}</strong> at{" "}
                   {new Date(post.createdAt).toLocaleDateString()}{" "}
-                  <Badge variant="success" pill className="ml-2">
-                    {post.tag}
-                  </Badge>
+                  {post.tags.length > 0 &&
+                    post.tags.map((tag, index) => (
+                      <Badge
+                        variant="success"
+                        pill
+                        className="ml-2"
+                        key={`${tag}${index}`}
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
                 </Card.Subtitle>
                 <Card.Title>{post.name}</Card.Title>
                 <Card.Text>{post.description}</Card.Text>
