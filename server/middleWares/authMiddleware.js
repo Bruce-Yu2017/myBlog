@@ -3,7 +3,7 @@ const auth = (req, res, next) => {
     next();
   } else {
     res.status(401);
-    throw new Error("Not authorized or Session time out, please login again.");
+    throw new Error("Session time out or Not authorized, please login again.");
   }
 };
 
