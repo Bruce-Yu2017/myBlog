@@ -6,6 +6,9 @@ import {
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
   USER_LOGOUT,
+  USER_AUTH_STATUS_REQUEST,
+  USER_AUTH_STATUS_SUCCESS,
+  USER_AUTH_STATUS_FAIL,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -72,5 +75,23 @@ export const register = ({ name, password, email }) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   await axios.post("/api/users/logout", {});
   dispatch({ type: USER_LOGOUT });
-  window.location.href = "/login";
+};
+
+export const checkAuthStatus = () => async (dispatch) => {
+  dispatch({ type: USER_AUTH_STATUS_REQUEST });
+  try {
+    const { data } = await axios.get("/api/users/auth");
+    dispatch({
+      type: USER_AUTH_STATUS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_AUTH_STATUS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
 };

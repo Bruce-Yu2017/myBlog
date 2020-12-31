@@ -1,13 +1,19 @@
 import { combineReducers, applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { postsListReducer, postDetailReducer } from "./reducers/postReducers";
-import { userAuthReducer } from "./reducers/userReducers";
+import {
+  postsListReducer,
+  postDetailReducer,
+  postCreateReducer,
+} from "./reducers/postReducers";
+import { userAuthReducer, authStatusReducer } from "./reducers/userReducers";
 
 const reducers = combineReducers({
   postsList: postsListReducer,
   postDetail: postDetailReducer,
   userAuth: userAuthReducer,
+  postCreate: postCreateReducer,
+  authStatus: authStatusReducer,
 });
 
 const userInfoFromLocalstorage = localStorage.getItem("loginUser")

@@ -35,7 +35,7 @@ const register = asyncHandler(async (req, res) => {
 });
 
 const login = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { email, password } = req.body;
   const existUser = await User.findOne({ email });
   const matchPassowrd = existUser
     ? await bcrypt.compare(password, existUser.password)
@@ -58,4 +58,8 @@ const logout = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "logout success" });
 });
 
-export { register, login, logout };
+const getAuthStatus = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: "success" });
+});
+
+export { register, login, logout, getAuthStatus };

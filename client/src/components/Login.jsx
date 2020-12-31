@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
 import Message from "./Message";
 import { Link } from "react-router-dom";
+import { USER_AUTH_STATUS_RESET } from "../constants/userConstants";
 
 const Login = ({ history }) => {
   const { register, handleSubmit, errors } = useForm({ mode: "all" });
@@ -14,15 +15,20 @@ const Login = ({ history }) => {
   const { userAuth } = useSelector((state) => state);
   const { loading, userInfo, error } = userAuth;
 
+  const { authStatus } = useSelector((state) => state);
+  const { error: authError } = authStatus;
+
   const submitHandler = ({ email, password }) => {
     dispatch(login({ email, password }));
+    dispatch({ type: USER_AUTH_STATUS_RESET });
   };
 
   useEffect(() => {
+    console.log(authError);
     if (userInfo) {
       history.goBack();
     }
-  }, [history, userInfo]);
+  }, [history, userInfo, authError]);
   return (
     <div>
       {loading && <Loader />}
@@ -30,6 +36,7 @@ const Login = ({ history }) => {
         <Col xs={12} md={6}>
           <h1 className="text-center">Sign In</h1>
           {error && <Message variant="danger">{error}</Message>}
+          {authError && <Message variant="danger">{authError}</Message>}
 
           <Form className="mt-3" onSubmit={handleSubmit(submitHandler)}>
             <Form.Group>

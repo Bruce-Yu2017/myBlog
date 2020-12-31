@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
 import Message from "./Message";
 import { Link } from "react-router-dom";
-
+import { USER_AUTH_STATUS_RESET } from "../constants/userConstants";
 const Register = ({ history }) => {
   const { register, handleSubmit, errors, watch } = useForm({ mode: "all" });
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ const Register = ({ history }) => {
 
   const submitHandler = ({ name, email, password }) => {
     dispatch(registerAction({ name, email, password }));
+    dispatch({ type: USER_AUTH_STATUS_RESET });
   };
 
   useEffect(() => {

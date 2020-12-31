@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, useMemo } from "react";
 import { Card, Row, Col, Badge, Image } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { getPost } from "../actions/postActions";
@@ -6,12 +6,18 @@ import { Link } from "react-router-dom";
 import Loader from "./Loader";
 import Message from "./Message";
 import { GET_POST_DETAIL_RESET } from "../constants/postConstants";
+import { Editable, withReact, Slate } from "slate-react";
+import { createEditor } from "slate";
+import { Element, Leaf } from "./richTextEditor/HelperComponents";
 
 const PostDetail = ({ match }) => {
   const postId = match.params.id;
   const dispatch = useDispatch();
   const { postDetail } = useSelector((state) => state);
   const { loading, post, error } = postDetail;
+  const editor = useMemo(() => withReact(createEditor()), []);
+  const renderElement = useCallback((props) => <Element {...props} />, []);
+  const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   useEffect(() => {
     if (post && post._id !== postId) {
       dispatch({ type: GET_POST_DETAIL_RESET });
@@ -64,7 +70,15 @@ const PostDetail = ({ match }) => {
                 <Card.Text className="small text-info">
                   {post.description}
                 </Card.Text>
-                <Card.Text>{post.content}</Card.Text>
+                <div className="bg-white min-height-300 p-1">
+                  <Slate editor={editor} value={JSON.parse(post.content)}>
+                    <Editable
+                      readOnly
+                      renderElement={renderElement}
+                      renderLeaf={renderLeaf}
+                    />
+                  </Slate>
+                </div>
               </Col>
             </Row>
           </Card.Body>

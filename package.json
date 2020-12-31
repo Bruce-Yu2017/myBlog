@@ -20,7 +20,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon server/server1.js",
+    "server": "nodemon server/server2.js",
     "client": "npm start --prefix client",
     "data:import": "node server/dummyData",
     "dev": "concurrently \"npm run server\" \"npm run client\""

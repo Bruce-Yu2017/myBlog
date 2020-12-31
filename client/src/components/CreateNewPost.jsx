@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Alert, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { login } from "../actions/userActions";
+import { createPost } from "../actions/postActions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
 import Message from "./Message";
 import EditorMain from "./richTextEditor/EditorMain";
 import TagGenerator from "./TagGenerator";
 import { Node } from "slate";
+import { POST_CREATE_RESET } from "../constants/postConstants";
 
 const CreateNewPost = ({ history }) => {
   const { register, handleSubmit, errors } = useForm({ mode: "all" });
@@ -15,6 +16,13 @@ const CreateNewPost = ({ history }) => {
 
   const { userAuth } = useSelector((state) => state);
   const { loading, userInfo, error } = userAuth;
+
+  const { postCreate } = useSelector((state) => state);
+  const {
+    loading: createPostLoading,
+    post,
+    error: createPostError,
+  } = postCreate;
 
   const [tags, setTags] = useState([]);
   const [content, setContent] = useState(null);
@@ -34,10 +42,10 @@ const CreateNewPost = ({ history }) => {
     const payload = {
       name: title,
       description,
-      tags,
+      tags: tags.map((tag) => tag.text),
       content: JSON.stringify(content),
     };
-    console.log("payload: ", payload);
+    dispatch(createPost(payload));
   };
 
   const handleSetContent = (value) => {
@@ -47,17 +55,25 @@ const CreateNewPost = ({ history }) => {
   };
 
   useEffect(() => {
+    dispatch({ type: POST_CREATE_RESET });
     if (!userInfo) {
       history.push("/");
     }
-  }, [history, userInfo]);
+    if (post) {
+      history.push(`/post/${post._id}`);
+    }
+  }, [history, userInfo, dispatch, post]);
   return (
     <div>
       {loading && <Loader />}
+      {createPostLoading && <Loader />}
       <Row className="justify-content-md-center mt-1 mb-3">
         <Col xs={12} md={8}>
           <h2 className="text-center">Create New Post</h2>
           {error && <Message variant="danger">{error}</Message>}
+          {createPostError && (
+            <Message variant="danger">{createPostError}</Message>
+          )}
 
           <Form className="mt-3" onSubmit={handleSubmit(submitHandler)}>
             <Form.Group>

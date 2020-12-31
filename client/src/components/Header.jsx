@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   Button,
   Navbar,
@@ -13,11 +14,15 @@ import { logout } from "../actions/userActions";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { userAuth } = useSelector((state) => state);
   const { userInfo } = userAuth;
 
   const handleLogout = () => {
     dispatch(logout());
+    setTimeout(() => {
+      history.push("/login");
+    }, 100);
   };
 
   return (

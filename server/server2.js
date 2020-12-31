@@ -6,23 +6,34 @@ import path from "path";
 import userRoute from "./routes/userRoute.js";
 import postRoute from "./routes/postRoute.js";
 import { errorHandler } from "./middleWares/errorMiddleware.js";
+import { auth } from "./middleWares/authMiddleware.js";
 import session from "express-session";
-
 dotenv.config();
 
 connectDB();
 
 const app = express();
 app.use(express.json());
-app.use(morgan("dev"));
-
+app.use(
+  morgan(function (tokens, req, res) {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, "content-length"),
+      "-",
+      tokens["response-time"](req, res),
+      "ms",
+    ].join(" ");
+  })
+);
 app.use(
   session({
     secret: "secret", // Sign session id-related cookie s
     resave: true,
     saveUninitialized: false, // Save uninitialized sessions
     cookie: {
-      maxAge: 1000 * 60 * 3, // Set the effective time of session in milliseconds
+      maxAge: 1000 * 3600 * 24, // Set the effective time of session in milliseconds
     },
   })
 );
@@ -30,6 +41,7 @@ app.use(
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use(errorHandler);
+app.use(auth);
 
 const port = process.env.PORT || 5000;
 const mode = process.env.NODE_ENV;
