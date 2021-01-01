@@ -1,6 +1,7 @@
 body {
   background-color: #eee !important;
-  padding-top: 90px;
+  padding-top: 100px;
+  overflow: hidden;
 }
 
 .cursor-pointer {
@@ -82,4 +83,10 @@ div.ReactTags__selected button.ReactTags__remove {
   background-color: #ffffff;
   border-radius: 15px;
   margin-left: 4px;
+}
+
+#wrapper {
+  max-height: calc(100vh - 110px);
+  overflow: scroll;
+  overflow-x: hidden;
 }

@@ -19,6 +19,9 @@ const CreateNewPost = () => {
   const { userAuth } = useSelector((state) => state);
   const { loading, userInfo, error } = userAuth;
 
+  const { postsList } = useSelector((state) => state);
+  const { posts, finished } = postsList;
+
   const { postCreate } = useSelector((state) => state);
   const {
     loading: createPostLoading,

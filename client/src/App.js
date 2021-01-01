@@ -18,7 +18,6 @@ function App() {
           <Route component={Login} path="/login" />
           <Route component={Register} path="/register" />
           <ProtectedRoute path="/newpost" component={CreateNewPost} />
-          {/* <Route component={CreateNewPost} path="/newpost" /> */}
           <Route component={HomeScreen} path="/" exact />
         </Switch>
       </Container>

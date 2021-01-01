@@ -1,7 +1,9 @@
 import {
   GET_POSTS_REQUEST,
   GET_POSTS_SUCCESS,
+  GET_POSTS_SUCCESS_AND_FINISH,
   GET_POSTS_FAIL,
+  GET_POSTS_RESET,
   GET_POST_DETAIL_REQUEST,
   GET_POST_DETAIL_SUCCESS,
   GET_POST_DETAIL_FAIL,
@@ -10,16 +12,39 @@ import {
   POST_CREATE_SUCCESS,
   POST_CREATE_FAIL,
   POST_CREATE_RESET,
+  ADD_NEW_POST_TO_EXIST_POSTS,
 } from "../constants/postConstants";
 
-export const postsListReducer = (state = { posts: [] }, action) => {
+export const postsListReducer = (
+  state = { loading: false, posts: [], finished: false },
+  action
+) => {
   switch (action.type) {
     case GET_POSTS_REQUEST:
       return { ...state, loading: true };
     case GET_POSTS_SUCCESS:
-      return { ...state, loading: false, posts: action.payload };
+      return {
+        ...state,
+        loading: false,
+        posts: [...state.posts, ...action.payload.posts],
+      };
+    case GET_POSTS_SUCCESS_AND_FINISH:
+      return {
+        ...state,
+        loading: false,
+        posts: [...state.posts, ...action.payload.posts],
+        finished: true,
+      };
+    case ADD_NEW_POST_TO_EXIST_POSTS:
+      return {
+        ...state,
+        loading: false,
+        posts: [action.payload, ...state.posts],
+      };
     case GET_POSTS_FAIL:
       return { ...state, loading: false, error: action.payload };
+    case GET_POSTS_RESET:
+      return { loading: false, posts: [], finished: false };
     default:
       return state;
   }

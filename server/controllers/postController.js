@@ -4,11 +4,22 @@ import User from "../models/UserModel.js";
 
 const getPosts = asyncHandler(async (req, res) => {
   try {
-    const posts = await Post.find({}).populate({
-      path: "user",
-      select: "name",
+    const { skip, limit } = req.query;
+    const skipNum = Number(skip);
+    const limitNum = Number(limit);
+    const postCount = await Post.countDocuments();
+    const posts = await Post.find({})
+      .skip(skipNum)
+      .limit(limitNum)
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "user",
+        select: "name",
+      });
+    res.json({
+      posts,
+      hasMore: postCount - (skipNum + limitNum) > 0,
     });
-    res.json(posts);
   } catch (error) {
     throw new Error("server error", error);
   }
@@ -68,6 +79,10 @@ const createPost = asyncHandler(async (req, res) => {
       description: newPost.description,
       tags: newPost.tags,
       content: newPost.content,
+      user: {
+        name: req.session.user.name,
+        _id: req.session.user._id,
+      },
     });
   } catch (error) {
     res.status(400);

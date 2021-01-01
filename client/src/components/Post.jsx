@@ -30,7 +30,7 @@ const Post = ({ post }) => {
               </Col>
               <Col md={2} className="text-right">
                 <Image
-                  src={`https://source.unsplash.com/80x80/?${post.tag}`}
+                  src={`https://source.unsplash.com/80x80/?${post.name}`}
                   fluid
                 />
               </Col>

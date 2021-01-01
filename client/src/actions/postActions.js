@@ -1,6 +1,7 @@
 import {
   GET_POSTS_REQUEST,
   GET_POSTS_SUCCESS,
+  GET_POSTS_SUCCESS_AND_FINISH,
   GET_POSTS_FAIL,
   GET_POST_DETAIL_REQUEST,
   GET_POST_DETAIL_SUCCESS,
@@ -11,14 +12,22 @@ import {
 } from "../constants/postConstants";
 import axios from "axios";
 
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (skip, limit) => async (dispatch) => {
   dispatch({ type: GET_POSTS_REQUEST });
   try {
-    const { data } = await axios.get("/api/posts");
-    dispatch({
-      type: GET_POSTS_SUCCESS,
-      payload: data,
-    });
+    const url = `/api/posts?skip=${skip}&limit=${limit}`;
+    const { data } = await axios.get(url);
+    if (data.hasMore) {
+      dispatch({
+        type: GET_POSTS_SUCCESS,
+        payload: data,
+      });
+    } else {
+      dispatch({
+        type: GET_POSTS_SUCCESS_AND_FINISH,
+        payload: data,
+      });
+    }
   } catch (error) {
     dispatch({
       type: GET_POSTS_FAIL,
