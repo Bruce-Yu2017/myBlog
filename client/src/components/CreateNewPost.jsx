@@ -9,8 +9,10 @@ import EditorMain from "./richTextEditor/EditorMain";
 import TagGenerator from "./TagGenerator";
 import { Node } from "slate";
 import { POST_CREATE_RESET } from "../constants/postConstants";
+import { useHistory } from "react-router-dom";
 
-const CreateNewPost = ({ history }) => {
+const CreateNewPost = () => {
+  const history = useHistory();
   const { register, handleSubmit, errors } = useForm({ mode: "all" });
   const dispatch = useDispatch();
 

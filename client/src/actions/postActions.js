@@ -34,8 +34,6 @@ export const getPost = (id) => async (dispatch) => {
   dispatch({ type: GET_POST_DETAIL_REQUEST });
   try {
     const { data } = await axios.get(`/api/posts/${id}`);
-    console.log("data: ", data);
-    console.log(JSON.parse(data.content));
     dispatch({
       type: GET_POST_DETAIL_SUCCESS,
       payload: data,

@@ -24,7 +24,6 @@ const Login = ({ history }) => {
   };
 
   useEffect(() => {
-    console.log(authError);
     if (userInfo) {
       history.goBack();
     }
