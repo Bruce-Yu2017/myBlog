@@ -13,6 +13,13 @@ import {
   POST_CREATE_FAIL,
   POST_CREATE_RESET,
   ADD_NEW_POST_TO_EXIST_POSTS,
+  GET_MOST_VIEWS_POSTS_REQUEST,
+  GET_MOST_VIEWS_POSTS_SUCCESS,
+  GET_MOST_VIEWS_POSTS_FAIL,
+  SEARCH_POSTS_REQUEST,
+  SEARCH_POSTS_SUCCESS,
+  SEARCH_POSTS_FAIL,
+  SEARCH_POSTS_RESET,
 } from "../constants/postConstants";
 
 export const postsListReducer = (
@@ -75,6 +82,40 @@ export const postCreateReducer = (state = {}, action) => {
       return { ...state, loading: false, error: action.payload };
     case POST_CREATE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const getMostViewsPostReducer = (
+  state = { loading: false, posts: [] },
+  action
+) => {
+  switch (action.type) {
+    case GET_MOST_VIEWS_POSTS_REQUEST:
+      return { ...state, loading: true };
+    case GET_MOST_VIEWS_POSTS_SUCCESS:
+      return { ...state, loading: false, posts: action.payload };
+    case GET_MOST_VIEWS_POSTS_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const searchPostReducer = (
+  state = { loading: false, posts: [] },
+  action
+) => {
+  switch (action.type) {
+    case SEARCH_POSTS_REQUEST:
+      return { ...state, loading: true };
+    case SEARCH_POSTS_SUCCESS:
+      return { ...state, loading: false, posts: action.payload };
+    case SEARCH_POSTS_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case SEARCH_POSTS_RESET:
+      return { loading: false, posts: [] };
     default:
       return state;
   }

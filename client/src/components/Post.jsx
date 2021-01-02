@@ -6,7 +6,7 @@ const Post = ({ post }) => {
   return (
     <div className="cursor-pointer">
       <LinkContainer to={`/post/${post._id}`}>
-        <Card style={{ width: "100%" }} className="mb-1 mt-2">
+        <Card style={{ width: "100%" }} className="mb-2">
           <Card.Body>
             <Row>
               <Col md={10}>

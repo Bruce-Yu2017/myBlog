@@ -50,21 +50,27 @@ const HomeScreen = ({ history }) => {
   };
 
   return (
-    <div id="wrapper" onScroll={handleScroll}>
+    <>
       {userInfo && (
         <Row>
           <Col className="d-flex justify-content-end">
-            <Button onClick={() => handleCreatePost()}>Create New Post</Button>
+            <Button
+              onClick={() => handleCreatePost()}
+              className="btn btn-success py-1 mb-2"
+            >
+              New Post
+            </Button>
           </Col>
         </Row>
       )}
-
-      {posts.length > 0 &&
-        posts.map((post) => <Post key={post._id} post={post} />)}
-      <div id="loader" className="mb-2">
-        {loading && <Loader />}
+      <div id="wrapper" onScroll={handleScroll}>
+        {posts.length > 0 &&
+          posts.map((post) => <Post key={post._id} post={post} />)}
+        <div id="loader" className="mb-2">
+          {loading && <Loader />}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

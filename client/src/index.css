@@ -1,7 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   background-color: #eee !important;
-  padding-top: 100px;
+  padding-top: 80px;
   overflow: hidden;
+}
+
+button:focus {
+  outline: none !important;
 }
 
 .cursor-pointer {
@@ -86,7 +96,67 @@ div.ReactTags__selected button.ReactTags__remove {
 }
 
 #wrapper {
-  max-height: calc(100vh - 110px);
+  max-height: calc(98vh - 110px);
   overflow: scroll;
   overflow-x: hidden;
+}
+
+.search-input-area {
+  position: relative;
+}
+
+.search-box-close {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  margin-top: -11px;
+  cursor: pointer;
+}
+
+.search-result-area {
+  position: relative;
+  background-color: #eee;
+}
+
+.search-scroll-area {
+  max-height: 40vh;
+  overflow: scroll;
+}
+
+.search-result-area header {
+  font-size: 1.2rem;
+}
+.search-input {
+  height: 3.5rem !important;
+}
+
+.search-result-area .list-group-item-action {
+  padding: 5px 5px 5px 15px;
+}
+
+.search-result-area .list-group-item-action:hover {
+  background-color: #4284f7;
+}
+
+.search-result-area .list-group-item-action:hover .search-result-list-item,
+.search-result-area .list-group-item-action:hover article {
+  color: white !important;
+}
+
+.search-result-list-item header,
+.search-result-list-item article {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.search-result-list-item article {
+  font-size: 17px;
+  margin: 5px 0px 0px 25px;
+  font-weight: 400;
+  color: gray;
+}
+
+.search-result-readcount {
+  font-size: 14px;
 }

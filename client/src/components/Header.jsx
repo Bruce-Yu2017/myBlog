@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
@@ -8,9 +8,12 @@ import {
   Container,
   Image,
   Dropdown,
+  Form,
 } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../actions/userActions";
+import SearchBox from "./SearchBox";
+import { getMostViews } from "../actions/postActions";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -25,6 +28,13 @@ const Header = () => {
     }, 100);
   };
 
+  const [showSearchBox, setShowSearchBox] = useState(false);
+
+  const handleOpenModal = () => {
+    dispatch(getMostViews());
+    setShowSearchBox(true);
+  };
+
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" bg="light" fixed="top">
@@ -37,6 +47,14 @@ const Header = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto"></Nav>
+            <Form inline onClick={() => handleOpenModal()}>
+              <Form.Control
+                type="text"
+                placeholder="Search"
+                className="mr-sm-2 bg-white"
+                readOnly
+              />
+            </Form>
             <Nav>
               {!userInfo && (
                 <>
@@ -75,6 +93,7 @@ const Header = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <SearchBox show={showSearchBox} handle={setShowSearchBox} />
     </div>
   );
 };

@@ -90,4 +90,42 @@ const createPost = asyncHandler(async (req, res) => {
   }
 });
 
-export { getPosts, getPost, createPost };
+const getMostViewPosts = asyncHandler(async (req, res, next) => {
+  try {
+    req.session.touch();
+    const posts = await Post.find({}).populate({
+      path: "user",
+      select: "name id",
+    });
+    posts.sort((a, b) => b.readCount - a.readCount);
+    if (posts.length > 5) {
+      res.status(200).json(posts.slice(0, 5));
+    } else {
+      res.status(200).json(posts);
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
+
+const searchPosts = asyncHandler(async (req, res, next) => {
+  try {
+    req.session.touch();
+    const { keyword } = req.query;
+    console.log("keyword: ", keyword);
+    const posts = await Post.find({
+      $or: [
+        { name: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+        { content: { $regex: keyword, $options: "i" } },
+        { tags: { $regex: keyword, $options: "i" } },
+      ],
+    });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log("error: ", error);
+    return next(error);
+  }
+});
+
+export { getPosts, getPost, createPost, getMostViewPosts, searchPosts };

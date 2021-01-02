@@ -41,7 +41,7 @@ app.use(
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use(errorHandler);
-app.use(auth);
+// app.use(auth);
 
 const port = process.env.PORT || 5000;
 const mode = process.env.NODE_ENV;
