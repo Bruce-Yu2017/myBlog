@@ -15,14 +15,15 @@ const Post = ({ post }) => {
                 {moment(post.createdAt).fromNow()}{" "}
                 {post.tags.length > 0 &&
                   post.tags.map((tag, index) => (
-                    <Badge
-                      variant="success"
-                      pill
-                      className="ml-2"
-                      key={`${tag}${index}`}
-                    >
-                      {tag}
-                    </Badge>
+                    <LinkContainer to={`/tag/${tag}`} key={`${tag}${index}`}>
+                      <Badge
+                        variant="success"
+                        pill
+                        className="ml-2 cursor-pointer"
+                      >
+                        {tag}
+                      </Badge>
+                    </LinkContainer>
                   ))}
               </Card.Subtitle>
               <LinkContainer to={`/post/${post._id}`}>

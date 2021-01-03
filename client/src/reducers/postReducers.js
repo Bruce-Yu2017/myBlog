@@ -22,6 +22,10 @@ import {
   SEARCH_POSTS_SUCCESS,
   SEARCH_POSTS_FAIL,
   SEARCH_POSTS_RESET,
+  GET_POSTS_BY_TAG_REQUEST,
+  GET_POSTS_BY_TAG_SUCCESS,
+  GET_POSTS_BY_TAG_FAIL,
+  GET_POSTS_BY_TAG_RESET,
 } from "../constants/postConstants";
 
 export const postsListReducer = (
@@ -135,6 +139,24 @@ export const searchPostReducer = (
     case SEARCH_POSTS_FAIL:
       return { ...state, loading: false, error: action.payload };
     case SEARCH_POSTS_RESET:
+      return { loading: false, posts: [] };
+    default:
+      return state;
+  }
+};
+
+export const getTagPostsReducer = (
+  state = { loading: false, posts: [] },
+  action
+) => {
+  switch (action.type) {
+    case GET_POSTS_BY_TAG_REQUEST:
+      return { ...state, loading: true };
+    case GET_POSTS_BY_TAG_SUCCESS:
+      return { ...state, loading: false, posts: action.payload };
+    case GET_POSTS_BY_TAG_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case GET_POSTS_BY_TAG_RESET:
       return { loading: false, posts: [] };
     default:
       return state;

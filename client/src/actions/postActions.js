@@ -17,6 +17,9 @@ import {
   SEARCH_POSTS_FAIL,
   SET_INFINITY_SKIP_COUNT,
   SET_FIRST_RENDER,
+  GET_POSTS_BY_TAG_REQUEST,
+  GET_POSTS_BY_TAG_SUCCESS,
+  GET_POSTS_BY_TAG_FAIL,
 } from "../constants/postConstants";
 import axios from "axios";
 
@@ -150,4 +153,24 @@ export const setFirstRender = (isFirstRender) => (dispatch) => {
     type: SET_FIRST_RENDER,
     payload: isFirstRender,
   });
+};
+
+export const findPostByTag = (tag) => async (dispatch) => {
+  dispatch({ type: GET_POSTS_BY_TAG_REQUEST });
+  try {
+    const { data } = await axios.get(`/api/posts/tags?tag=${tag}`);
+    console.log("data: ", data);
+    dispatch({
+      type: GET_POSTS_BY_TAG_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_POSTS_BY_TAG_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
 };

@@ -1,12 +1,15 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import { Modal, Form, ListGroup } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { debounce } from "lodash";
 import { handleSearch } from "../actions/postActions";
 import { SEARCH_POSTS_RESET } from "../constants/postConstants";
+import { useHistory } from "react-router-dom";
 
 const SearchBox = ({ show, handle }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const searchRef = useRef(null);
   const { getMostViewsPost } = useSelector((state) => state);
   const { posts } = getMostViewsPost;
 
@@ -31,6 +34,17 @@ const SearchBox = ({ show, handle }) => {
     debouncedSave(val);
   };
 
+  const handleClick = (id) => {
+    handle(false);
+    history.push(`/post/${id}`);
+  };
+
+  useEffect(() => {
+    if (searchRef.current) {
+      searchRef.current.focus();
+    }
+  }, [posts]);
+
   return (
     <div>
       <Modal show={show} onHide={() => handle(false)} size="lg">
@@ -42,10 +56,11 @@ const SearchBox = ({ show, handle }) => {
                 placeholder="Search something..."
                 className="w-100 search-input"
                 value={searchKeyword}
-                autoFocus
+                ref={searchRef}
                 onChange={(e) => {
                   handleSearchInput(e.target.value);
                 }}
+                autoFocus
               />
             </Form>
             <span className="search-box-close" onClick={() => handle(false)}>
@@ -58,7 +73,13 @@ const SearchBox = ({ show, handle }) => {
               <ListGroup variant="flush" className="search-scroll-area">
                 {foundPosts.map((post) => {
                   return (
-                    <ListGroup.Item action key={post._id}>
+                    <ListGroup.Item
+                      action
+                      key={post._id}
+                      onClick={() => {
+                        handleClick(post._id);
+                      }}
+                    >
                       <div className="search-result-list-item p-1">
                         <header className="d-flex justify-content-between">
                           <div>
@@ -83,7 +104,13 @@ const SearchBox = ({ show, handle }) => {
               <ListGroup variant="flush" className="search-scroll-area">
                 {posts.map((post) => {
                   return (
-                    <ListGroup.Item action key={post._id}>
+                    <ListGroup.Item
+                      action
+                      key={post._id}
+                      onClick={() => {
+                        handleClick(post._id);
+                      }}
+                    >
                       <div className="search-result-list-item p-1">
                         <header className="d-flex justify-content-between">
                           <div>

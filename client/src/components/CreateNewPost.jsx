@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Form, Alert, Button } from "react-bootstrap";
+import { Row, Col, Form, Alert, Button, Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { createPost, setSkipCount } from "../actions/postActions";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ import {
   ADD_NEW_POST_TO_EXIST_POSTS,
 } from "../constants/postConstants";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const CreateNewPost = () => {
   const history = useHistory();
@@ -81,66 +82,74 @@ const CreateNewPost = () => {
   }, [dispatch, history, post, skip]);
   return (
     <div>
-      {loading && <Loader />}
-      {createPostLoading && <Loader />}
-      <Row className="justify-content-md-center mt-1 mb-3">
-        <Col xs={12} md={8}>
-          <h2 className="text-center">Create New Post</h2>
-          {error && <Message variant="danger">{error}</Message>}
-          {createPostError && (
-            <Message variant="danger">{createPostError}</Message>
-          )}
+      <Container>
+        {loading && <Loader />}
+        {createPostLoading && <Loader />}
+        <Row className="justify-content-md-center mt-1 mb-3">
+          <Col xs={12} md={8}>
+            <Link to="/" className="btn btn-light my-3">
+              <i className="fas fa-arrow-left mr-1"></i>Go Back
+            </Link>
+            <h2 className="text-center">Create New Post</h2>
+            {error && <Message variant="danger">{error}</Message>}
+            {createPostError && (
+              <Message variant="danger">{createPostError}</Message>
+            )}
 
-          <Form className="mt-3" onSubmit={handleSubmit(submitHandler)}>
-            <Form.Group>
-              <Form.Label>Post Title</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Title:"
-                name="title"
-                ref={register({ required: true })}
-              ></Form.Control>
-              {errors.title && (
-                <Alert variant="danger" className="mt-2">
-                  Title is required.
-                </Alert>
-              )}
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Post Description</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Description:"
-                name="description"
-                ref={register({ required: true })}
-              ></Form.Control>
-              {errors.description && (
-                <Alert variant="danger" className="mt-2">
-                  Description is required.
-                </Alert>
-              )}
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Post Tag</Form.Label>
-              <TagGenerator addTag={setTags} />
-            </Form.Group>
-            <EditorMain addContent={handleSetContent} />
-            {!firstRender &&
-              (contentError ||
-                content == null ||
-                serialize(content).length === 0) && (
-                <Alert variant="danger" className="mt-2">
-                  Post content is required.
-                </Alert>
-              )}
-            <div className="d-flex justify-content-end">
-              <Button type="submit" className="text-right mt-2 btn btn-success">
-                Submit
-              </Button>
-            </div>
-          </Form>
-        </Col>
-      </Row>
+            <Form className="mt-3" onSubmit={handleSubmit(submitHandler)}>
+              <Form.Group>
+                <Form.Label>Post Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Title:"
+                  name="title"
+                  ref={register({ required: true })}
+                ></Form.Control>
+                {errors.title && (
+                  <Alert variant="danger" className="mt-2">
+                    Title is required.
+                  </Alert>
+                )}
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Post Description</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Description:"
+                  name="description"
+                  ref={register({ required: true })}
+                ></Form.Control>
+                {errors.description && (
+                  <Alert variant="danger" className="mt-2">
+                    Description is required.
+                  </Alert>
+                )}
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Post Tag</Form.Label>
+                <TagGenerator addTag={setTags} />
+              </Form.Group>
+              <EditorMain addContent={handleSetContent} />
+              {!firstRender &&
+                (contentError ||
+                  content == null ||
+                  serialize(content).length === 0) && (
+                  <Alert variant="danger" className="mt-2">
+                    Post content is required.
+                  </Alert>
+                )}
+              <div className="d-flex justify-content-end">
+                <Button
+                  type="submit"
+                  className="text-right mt-2 btn btn-success"
+                >
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };

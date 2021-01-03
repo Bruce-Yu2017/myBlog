@@ -112,7 +112,6 @@ const searchPosts = asyncHandler(async (req, res, next) => {
   try {
     req.session.touch();
     const { keyword } = req.query;
-    console.log("keyword: ", keyword);
     const posts = await Post.find({
       $or: [
         { name: { $regex: keyword, $options: "i" } },
@@ -120,6 +119,9 @@ const searchPosts = asyncHandler(async (req, res, next) => {
         { content: { $regex: keyword, $options: "i" } },
         { tags: { $regex: keyword, $options: "i" } },
       ],
+    }).populate({
+      path: "user",
+      select: "name id",
     });
     res.status(200).json(posts);
   } catch (error) {
@@ -128,4 +130,28 @@ const searchPosts = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { getPosts, getPost, createPost, getMostViewPosts, searchPosts };
+const getPostsByTag = asyncHandler(async (req, res, next) => {
+  try {
+    req.session.touch();
+    const { tag } = req.query;
+    const posts = await Post.find({
+      tags: { $regex: tag, $options: "i" },
+    }).populate({
+      path: "user",
+      select: "name id",
+    });
+    res.status(200).json(posts);
+  } catch (error) {
+    console.log("error: ", error);
+    return next(error);
+  }
+});
+
+export {
+  getPosts,
+  getPost,
+  createPost,
+  getMostViewPosts,
+  searchPosts,
+  getPostsByTag,
+};

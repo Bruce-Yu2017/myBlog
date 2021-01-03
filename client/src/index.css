@@ -6,7 +6,7 @@
 
 body {
   background-color: #eee !important;
-  padding-top: 80px;
+  padding-top: 65px;
   overflow: hidden;
 }
 
@@ -96,7 +96,7 @@ div.ReactTags__selected button.ReactTags__remove {
 }
 
 #wrapper {
-  max-height: calc(98vh - 110px);
+  max-height: calc(98vh - 52px);
   overflow: scroll;
   overflow-x: hidden;
 }
@@ -119,7 +119,7 @@ div.ReactTags__selected button.ReactTags__remove {
 }
 
 .search-scroll-area {
-  max-height: 40vh;
+  max-height: 100vh;
   overflow: scroll;
 }
 
@@ -159,4 +159,18 @@ div.ReactTags__selected button.ReactTags__remove {
 
 .search-result-readcount {
   font-size: 14px;
+}
+
+.tag-container .jumbotron {
+  background-color: #f8f9fa !important;
+  margin-top: -20px;
+  text-align: center;
+  color: #666;
+}
+.tag-container {
+  overflow: auto;
+  max-height: 92vh;
+}
+.tag-container h1 {
+  text-transform: capitalize;
 }

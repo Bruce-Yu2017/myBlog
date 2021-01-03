@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getPosts, setSkipCount, setFirstRender } from "../actions/postActions";
 import Post from "./Post";
-import { Button, Row, Col } from "react-bootstrap";
+import { Button, Row, Col, Container } from "react-bootstrap";
 import { checkAuthStatus } from "../actions/userActions";
 import Loader from "./Loader";
 import { SET_FIRST_RENDER } from "../constants/postConstants";
@@ -37,10 +37,6 @@ const HomeScreen = ({ history }) => {
     }
   };
 
-  // useEffect(() => {
-  //   dispatch({ type: GET_POSTS_RESET });
-  // }, [dispatch]);
-
   useEffect(() => {
     if (!finished && isFirstRender) {
       dispatch(getPosts(0, limit));
@@ -57,24 +53,28 @@ const HomeScreen = ({ history }) => {
 
   return (
     <>
-      {userInfo && (
-        <Row>
-          <Col className="d-flex justify-content-end">
-            <Button
-              onClick={() => handleCreatePost()}
-              className="btn btn-success py-1 mb-2"
-            >
-              New Post
-            </Button>
-          </Col>
-        </Row>
-      )}
       <div id="wrapper" onScroll={handleScroll}>
-        {posts.length > 0 &&
-          posts.map((post) => <Post key={post._id} post={post} />)}
-        <div id="loader" className="mb-2">
-          {loading && <Loader />}
-        </div>
+        <Container>
+          {userInfo && (
+            <Row>
+              <Col className="d-flex justify-content-end pt-2">
+                <Button
+                  onClick={() => handleCreatePost()}
+                  className="btn btn-success py-1 mb-2"
+                >
+                  New Post
+                </Button>
+              </Col>
+            </Row>
+          )}
+          <div>
+            {posts.length > 0 &&
+              posts.map((post) => <Post key={post._id} post={post} />)}
+            <div id="loader" className="mb-2">
+              {loading && <Loader />}
+            </div>
+          </div>
+        </Container>
       </div>
     </>
   );
