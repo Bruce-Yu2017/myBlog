@@ -15,7 +15,8 @@ import {
   SEARCH_POSTS_REQUEST,
   SEARCH_POSTS_SUCCESS,
   SEARCH_POSTS_FAIL,
-  SEARCH_POSTS_RESET,
+  SET_INFINITY_SKIP_COUNT,
+  SET_FIRST_RENDER,
 } from "../constants/postConstants";
 import axios from "axios";
 
@@ -135,4 +136,18 @@ export const handleSearch = (keyword) => async (dispatch) => {
           : error.message,
     });
   }
+};
+
+export const setSkipCount = (skip) => (dispatch) => {
+  dispatch({
+    type: SET_INFINITY_SKIP_COUNT,
+    payload: skip,
+  });
+};
+
+export const setFirstRender = (isFirstRender) => (dispatch) => {
+  dispatch({
+    type: SET_FIRST_RENDER,
+    payload: isFirstRender,
+  });
 };

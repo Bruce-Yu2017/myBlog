@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getPosts } from "../actions/postActions";
+import { getPosts, setSkipCount, setFirstRender } from "../actions/postActions";
 import Post from "./Post";
 import { Button, Row, Col } from "react-bootstrap";
 import { checkAuthStatus } from "../actions/userActions";
 import Loader from "./Loader";
-import { GET_POSTS_RESET } from "../constants/postConstants";
+import { SET_FIRST_RENDER } from "../constants/postConstants";
 
 const HomeScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -16,31 +16,37 @@ const HomeScreen = ({ history }) => {
   const { userAuth } = useSelector((state) => state);
   const { userInfo } = userAuth;
 
-  const [skip, setSkip] = useState(0);
+  // const [skip, setSkip] = useState(0);
 
-  const [firstRender, setFirstRender] = useState(true);
+  // const [firstRender, setFirstRender] = useState(true);
 
   const limit = 10;
+  const { skipCount } = useSelector((state) => state);
+  const { skip } = skipCount;
+
+  const { firstRender } = useSelector((state) => state);
+  const { isFirstRender } = firstRender;
+
   const handleScroll = (e) => {
     const rectTop = document.getElementById("loader").getBoundingClientRect()
       .top;
     if (rectTop < window.innerHeight && !loading && !finished) {
       const newCount = skip + limit;
-      setSkip(newCount);
+      dispatch(setSkipCount(newCount));
       dispatch(getPosts(newCount, limit));
     }
   };
 
-  useEffect(() => {
-    dispatch({ type: GET_POSTS_RESET });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch({ type: GET_POSTS_RESET });
+  // }, [dispatch]);
 
   useEffect(() => {
-    if (!finished && firstRender) {
+    if (!finished && isFirstRender) {
       dispatch(getPosts(0, limit));
-      setFirstRender(false);
+      dispatch(setFirstRender({ type: SET_FIRST_RENDER, payload: false }));
     }
-  }, [dispatch, finished, firstRender]);
+  }, [dispatch, finished, isFirstRender]);
 
   const handleCreatePost = () => {
     dispatch(checkAuthStatus());

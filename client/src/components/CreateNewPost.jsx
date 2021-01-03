@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, Form, Alert, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { createPost } from "../actions/postActions";
+import { createPost, setSkipCount } from "../actions/postActions";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "./Loader";
 import Message from "./Message";
 import EditorMain from "./richTextEditor/EditorMain";
 import TagGenerator from "./TagGenerator";
 import { Node } from "slate";
-import { POST_CREATE_RESET } from "../constants/postConstants";
+import {
+  POST_CREATE_RESET,
+  ADD_NEW_POST_TO_EXIST_POSTS,
+} from "../constants/postConstants";
 import { useHistory } from "react-router-dom";
 
 const CreateNewPost = () => {
@@ -25,6 +28,9 @@ const CreateNewPost = () => {
     post,
     error: createPostError,
   } = postCreate;
+
+  const { skipCount } = useSelector((state) => state);
+  const { skip } = skipCount;
 
   const [tags, setTags] = useState([]);
   const [content, setContent] = useState(null);
@@ -58,13 +64,21 @@ const CreateNewPost = () => {
 
   useEffect(() => {
     dispatch({ type: POST_CREATE_RESET });
+  }, [dispatch, skip]);
+
+  useEffect(() => {
     if (!userInfo) {
       history.push("/");
     }
+  }, [history, userInfo]);
+
+  useEffect(() => {
     if (post) {
+      dispatch({ type: ADD_NEW_POST_TO_EXIST_POSTS, payload: post });
+      dispatch(setSkipCount(skip + 1));
       history.push(`/post/${post._id}`);
     }
-  }, [history, userInfo, dispatch, post]);
+  }, [dispatch, history, post, skip]);
   return (
     <div>
       {loading && <Loader />}

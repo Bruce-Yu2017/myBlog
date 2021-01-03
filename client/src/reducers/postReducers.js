@@ -13,6 +13,8 @@ import {
   POST_CREATE_FAIL,
   POST_CREATE_RESET,
   ADD_NEW_POST_TO_EXIST_POSTS,
+  SET_INFINITY_SKIP_COUNT,
+  SET_FIRST_RENDER,
   GET_MOST_VIEWS_POSTS_REQUEST,
   GET_MOST_VIEWS_POSTS_SUCCESS,
   GET_MOST_VIEWS_POSTS_FAIL,
@@ -52,6 +54,24 @@ export const postsListReducer = (
       return { ...state, loading: false, error: action.payload };
     case GET_POSTS_RESET:
       return { loading: false, posts: [], finished: false };
+    default:
+      return state;
+  }
+};
+
+export const skipCountReducer = (state = { skip: 0 }, action) => {
+  switch (action.type) {
+    case SET_INFINITY_SKIP_COUNT:
+      return { skip: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const firstRenderReducer = (state = { isFirstRender: true }, action) => {
+  switch (action.type) {
+    case SET_FIRST_RENDER:
+      return { isFirstRender: false };
     default:
       return state;
   }

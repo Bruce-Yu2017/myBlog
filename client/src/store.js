@@ -7,6 +7,8 @@ import {
   postCreateReducer,
   getMostViewsPostReducer,
   searchPostReducer,
+  skipCountReducer,
+  firstRenderReducer,
 } from "./reducers/postReducers";
 import { userAuthReducer, authStatusReducer } from "./reducers/userReducers";
 
@@ -18,6 +20,8 @@ const reducers = combineReducers({
   authStatus: authStatusReducer,
   getMostViewsPost: getMostViewsPostReducer,
   searchPost: searchPostReducer,
+  skipCount: skipCountReducer,
+  firstRender: firstRenderReducer,
 });
 
 const userInfoFromLocalstorage = localStorage.getItem("loginUser")
