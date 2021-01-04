@@ -48,7 +48,7 @@ const HomeScreen = ({ history }) => {
     dispatch(checkAuthStatus());
     setTimeout(() => {
       history.push("/newpost");
-    }, 100);
+    }, 300);
   };
 
   return (
