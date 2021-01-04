@@ -77,7 +77,7 @@ export const logout = () => async (dispatch) => {
   dispatch({ type: USER_LOGOUT });
 };
 
-export const checkAuthStatus = () => async (dispatch) => {
+export const checkAuthStatus = (cb) => async (dispatch) => {
   dispatch({ type: USER_AUTH_STATUS_REQUEST });
   try {
     const { data } = await axios.get("/api/users/auth");
@@ -85,6 +85,7 @@ export const checkAuthStatus = () => async (dispatch) => {
       type: USER_AUTH_STATUS_SUCCESS,
       payload: data,
     });
+    cb();
   } catch (error) {
     dispatch({
       type: USER_AUTH_STATUS_FAIL,
@@ -93,5 +94,6 @@ export const checkAuthStatus = () => async (dispatch) => {
           ? error.response.data.message
           : error.message,
     });
+    cb();
   }
 };

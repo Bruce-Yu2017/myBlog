@@ -44,11 +44,12 @@ const HomeScreen = ({ history }) => {
     }
   }, [dispatch, finished, isFirstRender]);
 
+  const navigateToCreatePageCallBack = () => {
+    history.push("/newpost");
+  };
+
   const handleCreatePost = () => {
-    dispatch(checkAuthStatus());
-    setTimeout(() => {
-      history.push("/newpost");
-    }, 300);
+    dispatch(checkAuthStatus(navigateToCreatePageCallBack));
   };
 
   return (
