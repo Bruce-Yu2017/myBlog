@@ -27,7 +27,7 @@ const PostDetail = ({ match }) => {
     }
   }, [dispatch, postId, post]);
   return (
-    <>
+    <div className="wrapper">
       <Container>
         <Link to="/" className="btn btn-light my-3">
           <i className="fas fa-arrow-left mr-1"></i>Go Back
@@ -86,7 +86,7 @@ const PostDetail = ({ match }) => {
           </Card>
         )}
       </Container>
-    </>
+    </div>
   );
 };
 

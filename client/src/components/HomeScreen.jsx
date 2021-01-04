@@ -54,7 +54,7 @@ const HomeScreen = ({ history }) => {
 
   return (
     <>
-      <div id="wrapper" onScroll={handleScroll}>
+      <div className="wrapper" onScroll={handleScroll}>
         <Container>
           {userInfo && (
             <Row>

@@ -81,7 +81,7 @@ const CreateNewPost = () => {
     }
   }, [dispatch, history, post, skip]);
   return (
-    <div>
+    <div className="wrapper">
       <Container>
         {loading && <Loader />}
         {createPostLoading && <Loader />}

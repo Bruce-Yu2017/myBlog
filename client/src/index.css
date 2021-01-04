@@ -95,7 +95,7 @@ div.ReactTags__selected button.ReactTags__remove {
   margin-left: 4px;
 }
 
-#wrapper {
+.wrapper {
   max-height: calc(98vh - 52px);
   overflow: scroll;
   overflow-x: hidden;
