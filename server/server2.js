@@ -6,7 +6,6 @@ import path from "path";
 import userRoute from "./routes/userRoute.js";
 import postRoute from "./routes/postRoute.js";
 import { errorHandler } from "./middleWares/errorMiddleware.js";
-import { auth } from "./middleWares/authMiddleware.js";
 import session from "express-session";
 dotenv.config();
 
@@ -41,7 +40,20 @@ app.use(
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use(errorHandler);
-// app.use(auth);
+
+const __dirname = path.resolve();
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(path.join(__dirname, "client", "build", "index.html"))
+    );
+  });
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running....");
+  });
+}
 
 const port = process.env.PORT || 5000;
 const mode = process.env.NODE_ENV;
