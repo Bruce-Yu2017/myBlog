@@ -44,17 +44,18 @@ const Header = () => {
               <i className="fab fa-blogger-b mr-1"></i>Bruce's Blog
             </Navbar.Brand>
           </LinkContainer>
+          <Form inline onClick={() => handleOpenModal()}>
+            <Form.Control
+              type="text"
+              placeholder="Search"
+              className="mr-sm-2 bg-white"
+              readOnly
+            />
+          </Form>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto"></Nav>
-            <Form inline onClick={() => handleOpenModal()}>
-              <Form.Control
-                type="text"
-                placeholder="Search"
-                className="mr-sm-2 bg-white"
-                readOnly
-              />
-            </Form>
+
             <Nav>
               {!userInfo && (
                 <>
