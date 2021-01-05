@@ -1,6 +1,8 @@
 import asyncHandler from "express-async-handler";
 import Post from "../models/PostModel.js";
 import User from "../models/UserModel.js";
+import Reply from "../models/ReplyModel.js";
+import Comment from "../models/CommentModel.js";
 
 const getPosts = asyncHandler(async (req, res) => {
   try {
@@ -31,10 +33,24 @@ const getPost = asyncHandler(async (req, res, next) => {
     const postId = req.params.id;
     const userId = req.session.user ? req.session.user._id : null;
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-    const post = await Post.findById(postId).populate({
-      path: "user",
-      select: "name id picture",
-    });
+    const post = await Post.findById(postId)
+      .populate({
+        path: "user",
+        select: "name id picture",
+      })
+      .populate({
+        path: "replies",
+        populate: {
+          path: "comments",
+          populate: [
+            { path: "author", select: "id name" },
+            {
+              path: "targetComment",
+              populate: { path: "author", select: "id name" },
+            },
+          ],
+        },
+      });
     const { readBy } = post;
     const fromIp = readBy.get("fromIp");
     const fromUserId = readBy.get("fromUserId");

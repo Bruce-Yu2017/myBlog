@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
 const initMap = () => {
@@ -43,6 +42,12 @@ const PostSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    replies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Reply",
+      },
+    ],
     createdAt: { default: new Date(), type: Date },
   },
   {
