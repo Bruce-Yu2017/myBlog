@@ -40,16 +40,19 @@ const getPost = asyncHandler(async (req, res, next) => {
       })
       .populate({
         path: "replies",
-        populate: {
-          path: "comments",
-          populate: [
-            { path: "author", select: "id name" },
-            {
-              path: "targetComment",
-              populate: { path: "author", select: "id name" },
-            },
-          ],
-        },
+        populate: [
+          { path: "author", select: "id name" },
+          {
+            path: "comments",
+            populate: [
+              { path: "author", select: "id name" },
+              {
+                path: "targetComment",
+                populate: { path: "author", select: "id name" },
+              },
+            ],
+          },
+        ],
       });
     const { readBy } = post;
     const fromIp = readBy.get("fromIp");

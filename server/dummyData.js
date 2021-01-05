@@ -39,7 +39,7 @@ const importData = async () => {
       content: "My first reply",
       comments: [firstTargetComment._id, newComment._id],
     });
-    post.replys.push(newReply);
+    post.replies.push(newReply);
     await post.save();
     console.log("Data imported");
     process.exit();
