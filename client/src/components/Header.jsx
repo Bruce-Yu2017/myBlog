@@ -48,7 +48,7 @@ const Header = () => {
             <Form.Control
               type="text"
               placeholder="Search"
-              className="mr-sm-2 bg-white"
+              className="mr-sm-2 bg-white sm-input"
               readOnly
             />
           </Form>

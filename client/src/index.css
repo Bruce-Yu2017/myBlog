@@ -194,3 +194,9 @@ div.ReactTags__selected button.ReactTags__remove {
 .thumb-up-btn:focus {
   box-shadow: none !important;
 }
+
+@media (max-width: 388px) {
+  .sm-input {
+    width: 70px !important;
+  }
+}

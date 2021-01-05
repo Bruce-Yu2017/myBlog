@@ -19,7 +19,7 @@ const Post = ({ post }) => {
       <Card style={{ width: "100%" }} className="mb-2">
         <Card.Body>
           <Row>
-            <Col md={10}>
+            <Col xs={8} md={10}>
               <Card.Subtitle className="mb-2 text-muted">
                 Post by <strong>{post.user.name}</strong>{" "}
                 {moment(post.createdAt).fromNow()}{" "}
@@ -54,7 +54,7 @@ const Post = ({ post }) => {
                 {post.thumpUpCount}
               </Button>
             </Col>
-            <Col md={2} className="text-right">
+            <Col xs={4} md={2} className="text-right">
               <Image
                 src={`https://source.unsplash.com/80x80/?${post.name}`}
                 fluid

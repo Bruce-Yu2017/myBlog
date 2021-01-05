@@ -163,7 +163,6 @@ export const findPostByTag = (tag) => async (dispatch) => {
   dispatch({ type: GET_POSTS_BY_TAG_REQUEST });
   try {
     const { data } = await axios.get(`/api/posts/tags?tag=${tag}`);
-    console.log("data: ", data);
     dispatch({
       type: GET_POSTS_BY_TAG_SUCCESS,
       payload: data,
