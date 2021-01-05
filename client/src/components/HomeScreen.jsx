@@ -16,10 +16,6 @@ const HomeScreen = ({ history }) => {
   const { userAuth } = useSelector((state) => state);
   const { userInfo } = userAuth;
 
-  // const [skip, setSkip] = useState(0);
-
-  // const [firstRender, setFirstRender] = useState(true);
-
   const limit = 10;
   const { skipCount } = useSelector((state) => state);
   const { skip } = skipCount;
@@ -51,6 +47,15 @@ const HomeScreen = ({ history }) => {
   const handleCreatePost = () => {
     dispatch(checkAuthStatus(navigateToCreatePageCallBack));
   };
+
+  const { thumbup } = useSelector((state) => state);
+  const { error: thumbUpError } = thumbup;
+
+  useEffect(() => {
+    if (thumbUpError) {
+      history.push("/login");
+    }
+  }, [history, thumbUpError]);
 
   return (
     <>

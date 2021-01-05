@@ -10,6 +10,7 @@ import {
   USER_AUTH_STATUS_SUCCESS,
   USER_AUTH_STATUS_FAIL,
   USER_AUTH_STATUS_RESET,
+  UPDATE_USER_BY_THUMBUP,
 } from "../constants/userConstants";
 
 export const userAuthReducer = (state = {}, action) => {
@@ -26,6 +27,8 @@ export const userAuthReducer = (state = {}, action) => {
       return { loading: false, userInfo: action.payload };
     case USER_REGISTER_FAIL:
       return { loading: false, error: action.payload };
+    case UPDATE_USER_BY_THUMBUP:
+      return { loading: false, userInfo: action.payload };
     case USER_LOGOUT:
       localStorage.removeItem("loginUser");
       return {};

@@ -10,6 +10,7 @@ import {
   skipCountReducer,
   firstRenderReducer,
   getTagPostsReducer,
+  thumbupReducer,
 } from "./reducers/postReducers";
 import { userAuthReducer, authStatusReducer } from "./reducers/userReducers";
 
@@ -24,6 +25,7 @@ const reducers = combineReducers({
   skipCount: skipCountReducer,
   firstRender: firstRenderReducer,
   getTagPosts: getTagPostsReducer,
+  thumbup: thumbupReducer,
 });
 
 const userInfoFromLocalstorage = localStorage.getItem("loginUser")

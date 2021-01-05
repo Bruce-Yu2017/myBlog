@@ -39,6 +39,10 @@ const PostSchema = mongoose.Schema(
       type: Map,
       default: initMap(),
     },
+    thumpUpCount: {
+      type: Number,
+      default: 0,
+    },
     createdAt: { default: new Date(), type: Date },
   },
   {

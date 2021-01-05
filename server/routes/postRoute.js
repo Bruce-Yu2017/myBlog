@@ -6,12 +6,14 @@ import {
   getMostViewPosts,
   searchPosts,
   getPostsByTag,
+  handleThunbUp,
 } from "../controllers/postController.js";
 import { auth } from "../middleWares/authMiddleware.js";
 
 const router = express.Router();
 
 router.route("/search").post(searchPosts);
+router.route("/thumbUp/:postId").put(auth, handleThunbUp);
 router.route("/mostviewsposts").get(getMostViewPosts);
 router.route("/tags").get(getPostsByTag);
 router.route("/").get(getPosts);

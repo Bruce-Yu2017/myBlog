@@ -18,6 +18,10 @@ const UserSchema = mongoose.Schema(
     picture: {
       type: Map,
     },
+    thumbUpPosts: {
+      default: new Map(),
+      type: Map,
+    },
   },
   {
     timeStamps: true,

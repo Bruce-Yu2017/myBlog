@@ -26,6 +26,11 @@ import {
   GET_POSTS_BY_TAG_SUCCESS,
   GET_POSTS_BY_TAG_FAIL,
   GET_POSTS_BY_TAG_RESET,
+  THUMB_UP_REQUEST,
+  THUMB_UP_SUCCESS,
+  THUMB_UP_FAIL,
+  UPDATE_POST_BY_THUMBUP,
+  THUMB_UP_RESET,
 } from "../constants/postConstants";
 
 export const postsListReducer = (
@@ -53,6 +58,16 @@ export const postsListReducer = (
         ...state,
         loading: false,
         posts: [action.payload, ...state.posts],
+      };
+    case UPDATE_POST_BY_THUMBUP:
+      return {
+        ...state,
+        loading: false,
+        posts: state.posts.map((post) =>
+          post._id === action.payload._id
+            ? { ...post, thumpUpCount: action.payload.thumpUpCount }
+            : post
+        ),
       };
     case GET_POSTS_FAIL:
       return { ...state, loading: false, error: action.payload };
@@ -158,6 +173,24 @@ export const getTagPostsReducer = (
       return { ...state, loading: false, error: action.payload };
     case GET_POSTS_BY_TAG_RESET:
       return { loading: false, posts: [] };
+    default:
+      return state;
+  }
+};
+
+export const thumbupReducer = (
+  state = { loading: false, post: {} },
+  action
+) => {
+  switch (action.type) {
+    case THUMB_UP_REQUEST:
+      return { ...state, loading: true };
+    case THUMB_UP_SUCCESS:
+      return { ...state, loading: false, post: action.payload };
+    case THUMB_UP_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case THUMB_UP_RESET:
+      return { loading: false, post: {} };
     default:
       return state;
   }

@@ -20,9 +20,9 @@ const register = asyncHandler(async (req, res) => {
     });
     if (user) {
       req.session.user = user;
-      res
-        .status(201)
-        .json({ _id: user._id, name: user.name, email: user.email });
+      const copy = { ...user };
+      delete copy._doc.password;
+      res.status(200).json(copy._doc);
     } else {
       res.status(400);
       throw new Error("Invalid user data");
@@ -42,11 +42,9 @@ const login = asyncHandler(async (req, res) => {
     : null;
   if (existUser && matchPassowrd) {
     req.session.user = existUser;
-    res.status(200).json({
-      _id: existUser._id,
-      name: existUser.name,
-      email: existUser.email,
-    });
+    const copy = { ...existUser };
+    delete copy._doc.password;
+    res.status(200).json(copy._doc);
   } else {
     res.status(401);
     throw new Error("Invalid email or password");

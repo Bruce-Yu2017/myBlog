@@ -7,6 +7,7 @@ import Loader from "./Loader";
 import Message from "./Message";
 import { Link } from "react-router-dom";
 import { USER_AUTH_STATUS_RESET } from "../constants/userConstants";
+import { THUMB_UP_RESET } from "../constants/postConstants";
 
 const Login = ({ history }) => {
   const { register, handleSubmit, errors } = useForm({ mode: "all" });
@@ -18,16 +19,21 @@ const Login = ({ history }) => {
   const { authStatus } = useSelector((state) => state);
   const { error: authError } = authStatus;
 
+  const { thumbup } = useSelector((state) => state);
+  const { error: thumbUpError } = thumbup;
+
+  //need to clear all error states when user login
   const submitHandler = ({ email, password }) => {
     dispatch(login({ email, password }));
     dispatch({ type: USER_AUTH_STATUS_RESET });
+    dispatch({ type: THUMB_UP_RESET });
   };
 
   useEffect(() => {
-    if (userInfo) {
-      history.goBack();
+    if (userInfo && !thumbUpError && !authError) {
+      history.push("/");
     }
-  }, [history, userInfo, authError]);
+  }, [history, userInfo, authError, thumbUpError]);
   return (
     <div>
       <Container>
@@ -37,6 +43,7 @@ const Login = ({ history }) => {
             <h1 className="text-center">Sign In</h1>
             {error && <Message variant="danger">{error}</Message>}
             {authError && <Message variant="danger">{authError}</Message>}
+            {thumbUpError && <Message variant="danger">{thumbUpError}</Message>}
 
             <Form className="mt-3" onSubmit={handleSubmit(submitHandler)}>
               <Form.Group>

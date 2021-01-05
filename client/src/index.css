@@ -5,7 +5,6 @@
 }
 
 body {
-  background-color: #eee !important;
   padding-top: 65px;
   overflow: hidden;
 }
@@ -173,4 +172,25 @@ div.ReactTags__selected button.ReactTags__remove {
 }
 .tag-container h1 {
   text-transform: capitalize;
+}
+
+.thumb-up-btn {
+  background-color: white !important;
+  font-weight: bold !important;
+  border: 1px solid #edeeefb9 !important;
+  border-radius: 10%;
+}
+
+.thumb-up-btn-normal {
+  color: #b2bac2 !important;
+}
+.thumb-up-btn-active {
+  color: #6cbd45 !important;
+}
+
+.thumb-up-btn:hover {
+  background-color: #edeeefb9 !important;
+}
+.thumb-up-btn:focus {
+  box-shadow: none !important;
 }

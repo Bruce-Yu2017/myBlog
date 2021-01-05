@@ -147,6 +147,33 @@ const getPostsByTag = asyncHandler(async (req, res, next) => {
   }
 });
 
+const handleThunbUp = asyncHandler(async (req, res, next) => {
+  try {
+    req.session.touch();
+    const { postId } = req.params;
+    const post = await Post.findById(postId).populate({
+      path: "user",
+      select: "name id",
+    });
+    const user = await User.findById(req.session.user._id);
+    console.log("user.thumbUpPosts: ", user.thumbUpPosts);
+    if (user.thumbUpPosts.has(postId)) {
+      user.thumbUpPosts.delete(postId);
+      post.thumpUpCount -= 1;
+    } else {
+      user.thumbUpPosts.set(postId, true);
+
+      post.thumpUpCount += 1;
+    }
+    await post.save();
+    await user.save();
+    res.status(200).json({ post, user });
+  } catch (error) {
+    console.log("error: ", error);
+    return next(error);
+  }
+});
+
 export {
   getPosts,
   getPost,
@@ -154,4 +181,5 @@ export {
   getMostViewPosts,
   searchPosts,
   getPostsByTag,
+  handleThunbUp,
 };

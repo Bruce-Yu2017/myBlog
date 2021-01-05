@@ -20,7 +20,12 @@ import {
   GET_POSTS_BY_TAG_REQUEST,
   GET_POSTS_BY_TAG_SUCCESS,
   GET_POSTS_BY_TAG_FAIL,
+  THUMB_UP_REQUEST,
+  THUMB_UP_SUCCESS,
+  THUMB_UP_FAIL,
+  UPDATE_POST_BY_THUMBUP,
 } from "../constants/postConstants";
+import { UPDATE_USER_BY_THUMBUP } from "../constants/userConstants";
 import axios from "axios";
 
 export const getPosts = (skip, limit) => async (dispatch) => {
@@ -113,7 +118,6 @@ export const getMostViews = () => async (dispatch) => {
 };
 
 export const handleSearch = (keyword) => async (dispatch) => {
-  console.log("keyword: ", keyword);
   dispatch({ type: SEARCH_POSTS_REQUEST });
   const config = {
     header: {
@@ -167,6 +171,42 @@ export const findPostByTag = (tag) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_POSTS_BY_TAG_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const setThumbup = (postId) => async (dispatch) => {
+  dispatch({ type: THUMB_UP_REQUEST });
+  try {
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.put(
+      `/api/posts/thumbUp/${postId}`,
+      {},
+      config
+    );
+    dispatch({
+      type: THUMB_UP_SUCCESS,
+      payload: data.post,
+    });
+    dispatch({
+      type: UPDATE_POST_BY_THUMBUP,
+      payload: data.post,
+    });
+    dispatch({
+      type: UPDATE_USER_BY_THUMBUP,
+      payload: data.user,
+    });
+  } catch (error) {
+    dispatch({
+      type: THUMB_UP_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
