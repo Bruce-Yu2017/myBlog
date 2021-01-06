@@ -53,10 +53,12 @@ const Post = ({ post }) => {
                 <i className="fas fa-thumbs-up mr-1"></i>
                 {post.thumpUpCount}
               </Button>
-              <Button className="btn-sm user-interact-btn user-interact-btn-normal">
-                <i className="fas fa-comment-dots mr-1"></i>
-                {post.replies.length}
-              </Button>
+              <LinkContainer to={`/post/${post._id}/#replyArea`}>
+                <Button className="btn-sm user-interact-btn user-interact-btn-normal">
+                  <i className="fas fa-comment-dots mr-1"></i>
+                  {post.replies.length}
+                </Button>
+              </LinkContainer>
             </Col>
             <Col xs={4} md={2} className="text-right">
               <Image

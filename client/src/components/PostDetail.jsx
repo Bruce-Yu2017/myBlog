@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useMemo, useState } from "react";
 import { Card, Badge, Image, Container } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { getPost, setReplyOrComment } from "../actions/postActions";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Loader from "./Loader";
 import Message from "./Message";
 import ReplyCommentForm from "./ReplyCommentForm";
@@ -11,20 +11,36 @@ import { Editable, withReact, Slate } from "slate-react";
 import { createEditor } from "slate";
 import { Element, Leaf } from "./richTextEditor/HelperComponents";
 import moment from "moment";
+import { logout } from "../actions/userActions";
 
-const PostDetail = ({ match }) => {
+const PostDetail = ({ match, history }) => {
   const postId = match.params.id;
   const dispatch = useDispatch();
-
+  const location = useLocation();
   const { postDetail } = useSelector((state) => state);
   const { loading, post, error } = postDetail;
 
   const { userAuth } = useSelector((state) => state);
   const { userInfo } = userAuth;
 
+  const { replyOrComment } = useSelector((state) => state);
+  const { error: replyCommentError } = replyOrComment;
+
   const editor = useMemo(() => withReact(createEditor()), []);
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
+
+  const [rendered, setRendered] = useState(false);
+
+  useEffect(() => {
+    const loginpage = () => {
+      history.push("/login");
+    };
+    if (replyCommentError) {
+      dispatch(logout(loginpage));
+    }
+  }, [dispatch, history, replyCommentError]);
+
   useEffect(() => {
     if (post && post._id !== postId) {
       dispatch({ type: GET_POST_DETAIL_RESET });
@@ -32,7 +48,16 @@ const PostDetail = ({ match }) => {
     if (!post || post._id !== postId) {
       dispatch(getPost(postId));
     }
-  }, [dispatch, postId, post]);
+    if (location.hash && !rendered) {
+      let elem = document.getElementById(location.hash.slice(1));
+      if (elem) {
+        elem.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+    if (post) {
+      setRendered(true);
+    }
+  }, [dispatch, postId, post, location, rendered]);
 
   const [openedComment, setOpenComment] = useState(null);
   const [openedTargetComment, setOpenTargetComment] = useState(null);
@@ -151,7 +176,7 @@ const PostDetail = ({ match }) => {
                   />
                 </div>
               )}
-              <div className="reply-list">
+              <div className="reply-list" id="replyArea">
                 {post.replies.length > 0 &&
                   post.replies.map((reply, index) => (
                     <div className="reply-item" key={reply._id}>

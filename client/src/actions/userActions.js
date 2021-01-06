@@ -72,9 +72,12 @@ export const register = ({ name, password, email }) => async (dispatch) => {
   }
 };
 
-export const logout = () => async (dispatch) => {
+export const logout = (cb = null) => async (dispatch) => {
   await axios.post("/api/users/logout", {});
   dispatch({ type: USER_LOGOUT });
+  if (cb) {
+    cb();
+  }
 };
 
 export const checkAuthStatus = (cb) => async (dispatch) => {

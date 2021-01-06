@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.route("/search").post(searchPosts);
 router.route("/thumbUp/:postId").put(auth, handleThunbUp);
-router.route("/reply/:postId").post(createReplyOrComment);
+router.route("/reply/:postId").post(auth, createReplyOrComment);
 router.route("/mostviewsposts").get(getMostViewPosts);
 router.route("/tags").get(getPostsByTag);
 router.route("/").get(getPosts);

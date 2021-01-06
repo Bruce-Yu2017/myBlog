@@ -7,7 +7,10 @@ import Loader from "./Loader";
 import Message from "./Message";
 import { Link } from "react-router-dom";
 import { USER_AUTH_STATUS_RESET } from "../constants/userConstants";
-import { THUMB_UP_RESET } from "../constants/postConstants";
+import {
+  THUMB_UP_RESET,
+  CREATE_REPLY_OR_COMMENT_RESET,
+} from "../constants/postConstants";
 
 const Login = ({ history }) => {
   const { register, handleSubmit, errors } = useForm({ mode: "all" });
@@ -22,11 +25,15 @@ const Login = ({ history }) => {
   const { thumbup } = useSelector((state) => state);
   const { error: thumbUpError } = thumbup;
 
+  const { replyOrComment } = useSelector((state) => state);
+  const { error: replyCommentError } = replyOrComment;
+
   //need to clear all error states when user login
   const submitHandler = ({ email, password }) => {
     dispatch(login({ email, password }));
     dispatch({ type: USER_AUTH_STATUS_RESET });
     dispatch({ type: THUMB_UP_RESET });
+    dispatch({ type: CREATE_REPLY_OR_COMMENT_RESET });
   };
 
   useEffect(() => {
@@ -44,6 +51,9 @@ const Login = ({ history }) => {
             {error && <Message variant="danger">{error}</Message>}
             {authError && <Message variant="danger">{authError}</Message>}
             {thumbUpError && <Message variant="danger">{thumbUpError}</Message>}
+            {replyCommentError && (
+              <Message variant="danger">{replyCommentError}</Message>
+            )}
 
             <Form className="mt-3" onSubmit={handleSubmit(submitHandler)}>
               <Form.Group>
