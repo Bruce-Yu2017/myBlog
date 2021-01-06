@@ -41,17 +41,21 @@ const Post = ({ post }) => {
               </LinkContainer>
               <Card.Text className="text-muted">{post.description}</Card.Text>
               <Button
-                className={`btn-sm thumb-up-btn ${
+                className={`btn-sm user-interact-btn ${
                   userInfo &&
                   userInfo.thumbUpPosts &&
                   userInfo.thumbUpPosts[post._id]
-                    ? "thumb-up-btn-active"
-                    : "thumb-up-btn-normal"
+                    ? "user-interact-btn-active"
+                    : "user-interact-btn-normal"
                 }`}
                 onClick={() => handleThumbUp(post._id)}
               >
                 <i className="fas fa-thumbs-up mr-1"></i>
                 {post.thumpUpCount}
+              </Button>
+              <Button className="btn-sm user-interact-btn user-interact-btn-normal">
+                <i className="fas fa-comment-dots mr-1"></i>
+                {post.replies.length}
               </Button>
             </Col>
             <Col xs={4} md={2} className="text-right">

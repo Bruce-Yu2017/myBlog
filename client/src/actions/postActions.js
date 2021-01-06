@@ -24,6 +24,10 @@ import {
   THUMB_UP_SUCCESS,
   THUMB_UP_FAIL,
   UPDATE_POST_BY_THUMBUP,
+  CREATE_REPLY_OR_COMMENT_REQUEST,
+  CREATE_REPLY_OR_COMMENT_SUCCESS,
+  CREATE_REPLY_OR_COMMENT_FAIL,
+  UPDATE_POST_BY_REPLY_OR_COMMENT,
 } from "../constants/postConstants";
 import { UPDATE_USER_BY_THUMBUP } from "../constants/userConstants";
 import axios from "axios";
@@ -206,6 +210,38 @@ export const setThumbup = (postId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: THUMB_UP_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const setReplyOrComment = (payload, postId) => async (dispatch) => {
+  dispatch({ type: CREATE_REPLY_OR_COMMENT_REQUEST });
+  try {
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
+    const { data } = await axios.post(
+      `/api/posts/reply/${postId}`,
+      payload,
+      config
+    );
+    dispatch({
+      type: CREATE_REPLY_OR_COMMENT_SUCCESS,
+      payload: data,
+    });
+    dispatch({
+      type: UPDATE_POST_BY_REPLY_OR_COMMENT,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: CREATE_REPLY_OR_COMMENT_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

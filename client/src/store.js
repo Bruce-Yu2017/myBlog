@@ -11,6 +11,7 @@ import {
   firstRenderReducer,
   getTagPostsReducer,
   thumbupReducer,
+  replyOrCommentReducer,
 } from "./reducers/postReducers";
 import { userAuthReducer, authStatusReducer } from "./reducers/userReducers";
 
@@ -26,6 +27,7 @@ const reducers = combineReducers({
   firstRender: firstRenderReducer,
   getTagPosts: getTagPostsReducer,
   thumbup: thumbupReducer,
+  replyOrComment: replyOrCommentReducer,
 });
 
 const userInfoFromLocalstorage = localStorage.getItem("loginUser")

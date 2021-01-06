@@ -31,6 +31,11 @@ import {
   THUMB_UP_FAIL,
   UPDATE_POST_BY_THUMBUP,
   THUMB_UP_RESET,
+  CREATE_REPLY_OR_COMMENT_REQUEST,
+  CREATE_REPLY_OR_COMMENT_SUCCESS,
+  CREATE_REPLY_OR_COMMENT_FAIL,
+  CREATE_REPLY_OR_COMMENT_RESET,
+  UPDATE_POST_BY_REPLY_OR_COMMENT,
 } from "../constants/postConstants";
 
 export const postsListReducer = (
@@ -104,6 +109,8 @@ export const postDetailReducer = (state = { post: null }, action) => {
       return { ...state, loading: false, post: action.payload };
     case GET_POST_DETAIL_FAIL:
       return { ...state, loading: false, error: action.payload };
+    case UPDATE_POST_BY_REPLY_OR_COMMENT:
+      return { ...state, loading: false, post: action.payload };
     case GET_POST_DETAIL_RESET:
       return { post: null };
     default:
@@ -191,6 +198,24 @@ export const thumbupReducer = (
       return { ...state, loading: false, error: action.payload };
     case THUMB_UP_RESET:
       return { loading: false, post: {} };
+    default:
+      return state;
+  }
+};
+
+export const replyOrCommentReducer = (
+  state = { loading: false, updatedPost: {} },
+  action
+) => {
+  switch (action.type) {
+    case CREATE_REPLY_OR_COMMENT_REQUEST:
+      return { ...state, loading: true };
+    case CREATE_REPLY_OR_COMMENT_SUCCESS:
+      return { ...state, loading: false, updatedPost: action.payload };
+    case CREATE_REPLY_OR_COMMENT_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case CREATE_REPLY_OR_COMMENT_RESET:
+      return { loading: false, updatedPost: {} };
     default:
       return state;
   }

@@ -40,10 +40,12 @@ const getPost = asyncHandler(async (req, res, next) => {
       })
       .populate({
         path: "replies",
+        options: { sort: { createdAt: -1 } },
         populate: [
           { path: "author", select: "id name" },
           {
             path: "comments",
+            options: { sort: { createdAt: -1 } },
             populate: [
               { path: "author", select: "id name" },
               {
@@ -175,7 +177,6 @@ const handleThunbUp = asyncHandler(async (req, res, next) => {
       select: "name id",
     });
     const user = await User.findById(req.session.user._id);
-    console.log("user.thumbUpPosts: ", user.thumbUpPosts);
     if (user.thumbUpPosts.has(postId)) {
       user.thumbUpPosts.delete(postId);
       post.thumpUpCount -= 1;
@@ -193,6 +194,73 @@ const handleThunbUp = asyncHandler(async (req, res, next) => {
   }
 });
 
+const createReplyOrComment = asyncHandler(async (req, res, next) => {
+  try {
+    req.session.touch();
+    const { postId } = req.params;
+    const { content, type, replyId, targetCommentId } = req.body;
+    const post = await Post.findById(postId);
+    if (type === "reply") {
+      const reply = new Reply({
+        author: req.session.user._id,
+        content,
+        createdAt: new Date(),
+      });
+      const newReply = await reply.save();
+      post.replies.push(newReply._id);
+    } else if (type === "comment") {
+      const reply = await Reply.findById(replyId);
+      const comment = new Comment({
+        author: req.session.user._id,
+        content,
+        createdAt: new Date(),
+      });
+      const newComment = await comment.save();
+      reply.comments.push(newComment._id);
+      await reply.save();
+    } else if (type === "targetComment") {
+      const reply = await Reply.findById(replyId);
+      const comment = new Comment({
+        author: req.session.user._id,
+        content,
+        targetComment: targetCommentId,
+        createdAt: new Date(),
+      });
+      const newComment = await comment.save();
+      reply.comments.push(newComment._id);
+      await reply.save();
+    }
+    await post.save();
+    const updatedPost = await Post.findById(postId)
+      .populate({
+        path: "user",
+        select: "name id picture",
+      })
+      .populate({
+        path: "replies",
+        options: { sort: { createdAt: -1 } },
+        populate: [
+          { path: "author", select: "id name" },
+          {
+            path: "comments",
+            options: { sort: { createdAt: -1 } },
+            populate: [
+              { path: "author", select: "id name" },
+              {
+                path: "targetComment",
+                populate: { path: "author", select: "id name" },
+              },
+            ],
+          },
+        ],
+      });
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    console.log("error: ", error);
+    return next(error);
+  }
+});
+
 export {
   getPosts,
   getPost,
@@ -201,4 +269,5 @@ export {
   searchPosts,
   getPostsByTag,
   handleThunbUp,
+  createReplyOrComment,
 };
